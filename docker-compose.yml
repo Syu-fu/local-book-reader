@@ -1,0 +1,58 @@
+version: '3'
+services:
+  react:
+    build:
+      context: .
+      dockerfile: ./docker/react/Dockerfile
+    container_name: react_container
+    tty: true
+    volumes:
+      - ./react-app:/app/react
+    command: sh -c "cd /app/react && npm i && npm start"
+    ports:
+      - 3000:3000
+  go:
+    build:
+      context: .
+      dockerfile: ./docker/golang/Dockerfile
+    container_name: go_container
+    ports:
+      - 8000:8000
+    tty: true
+    volumes:
+      - ./golang:/app/go
+    command: >
+      sh -c "reflex -s -r '\.go$$' go run main.go"
+  mysql:
+    build:
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: local-book-reader
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./mysql/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+    links:
+      - go
+  phpmyadmin:
+    build:
+      context: .
+      dockerfile: ./docker/phpmyadmin/Dockerfile
+    container_name: phpmyadmin_container
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=admin
+      - PMA_PASSWORD=admin
+    links:
+      - mysql
+    ports:
+      - 8888:80
