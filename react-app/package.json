@@ -21,7 +21,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .ts,.tsx ./src"
+    "lint": "eslint --ext .ts,.tsx ./src",
+    "format": "prettier --write src/*.{ts,tsx}",
+    "check": "prettier --check src/*.{ts,tsx}"
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +49,7 @@
     "eslint": "^8.24.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.31.8",
