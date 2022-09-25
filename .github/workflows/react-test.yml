@@ -1,0 +1,19 @@
+name: react-test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  test:
+    name: react-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./react-app
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install packages
+        run: npm i
+      - name: Jest
+        run: npm test

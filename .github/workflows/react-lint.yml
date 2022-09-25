@@ -1,0 +1,21 @@
+name: react-lint
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  test:
+    name: react-lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./react-app
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install packages
+        run: npm i
+      - name: Prettier
+        run: npm run check
+      - name: Lint
+        run: npm run lint
