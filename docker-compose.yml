@@ -32,7 +32,7 @@ services:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
-      MYSQL_DATABASE: local-book-reader
+      MYSQL_DATABASE: local_book_reader
       TZ: 'Asia/Tokyo'
     volumes:
       - ./mysql/data:/var/lib/mysql
