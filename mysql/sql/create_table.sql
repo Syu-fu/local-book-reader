@@ -6,9 +6,9 @@ CREATE TABLE IF NOT EXISTS `local_book_reader`.`books` (
     `filepath`       TEXT(500) NOT NULL,
     `author`         TEXT(500) NOT NULL,
     `publisher`      TEXT(500) NOT NULL,
-    `create_at`      DATETIME  NOT NULL,
-    `update_at`      DATETIME  NOT NULL,
     `book_id`        CHAR(36)    DEFAULT (BIN_TO_UUID(UUID_TO_BIN(UUID(), 1))),
+    `created_at`     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `updated_at`     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     PRIMARY KEY (`book_id`, `volume`)
 );
 
@@ -18,28 +18,28 @@ CREATE TABLE IF NOT EXISTS `local_book_reader`.`book_groups` (
     `author`         TEXT(500) NOT NULL,
     `author_reading` TEXT(500) NOT NULL,
     `thumbnail`      TEXT(500) NOT NULL,
-    `create_at`      DATETIME  NOT NULL,
-    `update_at`      DATETIME  NOT NULL,
     PRIMARY KEY (`book_id`)            ,
     `book_id`        CHAR(36)    NOT NULL,
+    `created_at`     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `updated_at`     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     FOREIGN KEY (`book_id`)
     REFERENCES `books`(`book_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `local_book_reader`.`tags` (
     `tag_name`       CHAR(100) NOT NULL,
-    `create_at`      DATETIME  NOT NULL,
-    `update_at`      DATETIME  NOT NULL,
     `tag_id`         CHAR(36)    DEFAULT (BIN_TO_UUID(UUID_TO_BIN(UUID(), 1))),
+    `created_at`     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `updated_at`     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     PRIMARY KEY (`tag_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `local_book_reader`.`tagging` (
-    `create_at`      DATETIME  NOT NULL,
-    `update_at`      DATETIME  NOT NULL,
     PRIMARY KEY (`tag_id`, `book_id`)  ,
     `tag_id`         CHAR(36)    NOT NULL,
     `book_id`        CHAR(36)    NOT NULL,
+    `created_at`     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `updated_at`     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     FOREIGN KEY (`book_id`)
     REFERENCES `books`(`book_id`)      ,
     FOREIGN KEY (`tag_id`)
