@@ -1,0 +1,22 @@
+{
+	"mocks": {
+		"domain/repository/mock/book.go": {
+			"checksum": "49HgUok4FQpKuVJ96imbGw==",
+			"source_checksum": "7J9gnAacow5DXUngDDEOPw==",
+			"mode": "SOURCE_MODE",
+			"source_mode_runner": {
+				"source": "domain/repository/book.go",
+				"destination": "domain/repository/mock/book.go"
+			}
+		},
+		"usecase/mock/book.go": {
+			"checksum": "xk7hZLe/xSeX50qFqShxAw==",
+			"source_checksum": "DWHoHWeq4KTkHDxHkbvubA==",
+			"mode": "SOURCE_MODE",
+			"source_mode_runner": {
+				"source": "usecase/book.go",
+				"destination": "usecase/mock/book.go"
+			}
+		}
+	}
+}
