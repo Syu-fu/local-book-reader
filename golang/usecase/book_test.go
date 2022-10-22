@@ -19,8 +19,6 @@ func newFixtureBook() *model.Book {
 		Filepath:     "path/to/filepath",
 		Author:       "",
 		Publisher:    "",
-		CreateAt:     "",
-		UpdateAt:     "",
 	}
 }
 
@@ -34,8 +32,6 @@ func newFixtureBook2() *model.Book {
 		Filepath:     "path/to/filepath",
 		Author:       "",
 		Publisher:    "",
-		CreateAt:     "",
-		UpdateAt:     "",
 	}
 }
 
