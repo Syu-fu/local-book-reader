@@ -22,6 +22,8 @@ func (bookGroupRepo *BookGroupRepository) Read() ([]*model.BookGroup, error) {
 	if err != nil {
 		return nil, err
 	}
+	cnt := -1
+	fmt.Println("getList running")
 	for rows.Next() {
 		var bg model.BookGroup
 		var tag model.Tag
@@ -29,9 +31,16 @@ func (bookGroupRepo *BookGroupRepository) Read() ([]*model.BookGroup, error) {
 		if err != nil {
 			return nil, err
 		}
-		bg.AddTag(&tag)
-		bookgroups = append(bookgroups, &bg)
+		if cnt == -1 || bookgroups[cnt].BookId != bg.BookId {
+			bookgroups = append(bookgroups, &bg)
+			cnt++
+			bookgroups[cnt].AddTag(&tag)
+		} else {
+			bookgroups[cnt].AddTag(&tag)
+		}
 	}
+	fmt.Print("bookgroup list length:")
+	fmt.Sprintln(len(bookgroups))
 	return bookgroups, err
 }
 
