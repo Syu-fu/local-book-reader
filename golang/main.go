@@ -25,6 +25,9 @@ func main() {
 	tagRepo := infra.NewTagRepository(*sqlHandler)
 	tagService := usecase.NewTagUsecase(tagRepo)
 
+	bookGroupRepo := infra.NewBookGroupRepository(*sqlHandler)
+	bookGroupService := usecase.NewBookGroupUsecase(bookGroupRepo)
+
 	r := mux.NewRouter()
 	//handlers
 	n := negroni.New(
@@ -33,6 +36,7 @@ func main() {
 	//book
 	handler.MakeBookHandlers(r, *n, bookService)
 	handler.MakeTagHandlers(r, *n, tagService)
+	handler.MakeBookGroupHandlers(r, *n, bookGroupService)
 
 	http.Handle("/", r)
 
