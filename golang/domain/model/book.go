@@ -10,8 +10,6 @@ type Book struct {
 	Filepath     string
 	Author       string
 	Publisher    string
-	CreateAt     string
-	UpdateAt     string
 }
 
 //NewBook create a new book
