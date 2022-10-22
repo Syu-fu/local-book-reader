@@ -16,13 +16,13 @@ func NewTagRepository(sqlHandler SqlHandler) repository.TagRepository {
 
 func (tagRepo *TagRepository) Read() ([]*model.Tag, error) {
 	var tags []*model.Tag
-	rows, err := tagRepo.SqlHandler.Conn.Query("SELECT * FROM tags")
+	rows, err := tagRepo.SqlHandler.Conn.Query("SELECT tag_id, tag_name FROM tags")
 	if err != nil {
 		return nil, err
 	}
 	for rows.Next() {
 		var t model.Tag
-		err = rows.Scan(&t.TagId, &t.TagName, &t.CreateAt, &t.UpdateAt)
+		err = rows.Scan(&t.TagId, &t.TagName)
 		if err != nil {
 			return nil, err
 		}
@@ -34,7 +34,7 @@ func (tagRepo *TagRepository) Read() ([]*model.Tag, error) {
 func (tagRepo *TagRepository) ReadById(id string) (*model.Tag, error) {
 	var tag *model.Tag = new(model.Tag)
 	err := tagRepo.SqlHandler.Conn.QueryRow(
-		"SELECT * FROM tags WHERE tag_id = ?", id).Scan(&tag.TagId, &tag.TagName, &tag.CreateAt, &tag.UpdateAt)
+		"SELECT tag_id, tag_name FROM tags WHERE tag_id = ?", id).Scan(&tag.TagId, &tag.TagName)
 	return tag, err
 }
 
