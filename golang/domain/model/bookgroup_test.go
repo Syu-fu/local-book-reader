@@ -61,7 +61,7 @@ func TestRemoveTag(t *testing.T) {
 	assert.Equal(t, model.ErrNotFound, err)
 	tID := model.NewID()
 	tag, _ := model.NewTag(tID, "tagname")
-	bg.AddTag(tag)
+	_ = bg.AddTag(tag)
 	err = bg.RemoveTag(tID)
 	assert.Nil(t, err)
 }
@@ -70,7 +70,7 @@ func TestGetTag(t *testing.T) {
 	bg, _ := model.NewBookGroup(model.NewID(), "The Hitchhiker's Guide to the Galaxy", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Douglas Adams", "/path/to/thumbnail")
 	tID := model.NewID()
 	tag, _ := model.NewTag(tID, "tagname")
-	bg.AddTag(tag)
+	_ = bg.AddTag(tag)
 	outTag, err := bg.GetTag(tID)
 	assert.Nil(t, err)
 	assert.Equal(t, tag, outTag)
