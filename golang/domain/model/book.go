@@ -10,10 +10,11 @@ type Book struct {
 	Filepath     string
 	Author       string
 	Publisher    string
+	Direction    string
 }
 
 //NewBook create a new book
-func NewBook(bookId string, volume string, displayOrder int, thumbnail string, title string, filepath string, author string, publisher string) (*Book, error) {
+func NewBook(bookId, volume string, displayOrder int, thumbnail, title, filepath, author, publisher, direction string) (*Book, error) {
 	b := &Book{
 		BookId:       bookId,
 		Volume:       volume,
@@ -23,6 +24,7 @@ func NewBook(bookId string, volume string, displayOrder int, thumbnail string, t
 		Filepath:     filepath,
 		Author:       author,
 		Publisher:    publisher,
+		Direction:    direction,
 	}
 	err := b.Validate()
 	if err != nil {
@@ -33,7 +35,7 @@ func NewBook(bookId string, volume string, displayOrder int, thumbnail string, t
 
 //Validate validate book
 func (b *Book) Validate() error {
-	if b.BookId == "" || b.Volume == "" || b.Title == "" || b.Filepath == "" {
+	if b.BookId == "" || b.Volume == "" || b.Title == "" || b.Filepath == "" || b.Direction == "" {
 		return ErrInvalidEntity
 	}
 	return nil

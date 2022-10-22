@@ -16,7 +16,7 @@ func NewBookRepository(sqlHandler SqlHandler) repository.BookRepository {
 }
 
 func (bookRepo *BookRepository) ReadById(id string) (books []*model.Book, err error) {
-	rows, err := bookRepo.SqlHandler.Conn.Query("SELECT book_id, volume, display_order, thumbnail, title, filepath, author, publisher  FROM books WHERE book_id = ?", id)
+	rows, err := bookRepo.SqlHandler.Conn.Query("SELECT book_id, volume, display_order, thumbnail, title, filepath, author, publisher, direction FROM books WHERE book_id = ?", id)
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -30,7 +30,7 @@ func (bookRepo *BookRepository) ReadById(id string) (books []*model.Book, err er
 	for rows.Next() {
 		book := model.Book{}
 
-		if err := rows.Scan(&book.BookId, &book.Volume, &book.DisplayOrder, &book.Thumbnail, &book.Title, &book.Filepath, &book.Author, &book.Publisher); err != nil {
+		if err := rows.Scan(&book.BookId, &book.Volume, &book.DisplayOrder, &book.Thumbnail, &book.Title, &book.Filepath, &book.Author, &book.Publisher, &book.Direction); err != nil {
 			fmt.Print(err)
 		}
 
@@ -42,22 +42,22 @@ func (bookRepo *BookRepository) ReadById(id string) (books []*model.Book, err er
 func (bookRepo *BookRepository) ReadByIdAndVolume(id string, volume string) (*model.Book, error) {
 	var book *model.Book = new(model.Book)
 	err := bookRepo.SqlHandler.Conn.QueryRow(
-		"SELECT book_id, volume, display_order, thumbnail, title, filepath, author, publisher FROM books WHERE book_id = ? AND volume = ?",
-		id, volume).Scan(&book.BookId, &book.Volume, &book.DisplayOrder, &book.Thumbnail, &book.Title, &book.Filepath, &book.Author, &book.Publisher)
+		"SELECT book_id, volume, display_order, thumbnail, title, filepath, author, publisher, direction FROM books WHERE book_id = ? AND volume = ?",
+		id, volume).Scan(&book.BookId, &book.Volume, &book.DisplayOrder, &book.Thumbnail, &book.Title, &book.Filepath, &book.Author, &book.Publisher, &book.Direction)
 	return book, err
 }
 
 func (bookRepo *BookRepository) Create(book *model.Book) (*model.Book, error) {
 	_, err := bookRepo.SqlHandler.Conn.Exec(
-		"INSERT INTO books (book_id, volume, display_order, thumbnail, title, filepath, author, publisher) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-		book.BookId, book.Volume, book.DisplayOrder, book.Thumbnail, book.Title, book.Filepath, book.Author, book.Publisher)
+		"INSERT INTO books (book_id, volume, display_order, thumbnail, title, filepath, author, publisher, direction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		book.BookId, book.Volume, book.DisplayOrder, book.Thumbnail, book.Title, book.Filepath, book.Author, book.Publisher, book.Direction)
 	return book, err
 }
 
 func (bookRepo *BookRepository) Update(book *model.Book) (*model.Book, error) {
 	_, err := bookRepo.SqlHandler.Conn.Exec(
-		"UPDATE books SET volume = ?, display_order = ?, thumbnail = ?, title = ?, filepath = ?, author = ?, publisher = ? WHERE book_id = ?",
-		book.Volume, book.DisplayOrder, book.Thumbnail, book.Title, book.Filepath, book.Author, book.Publisher, book.BookId)
+		"UPDATE books SET volume = ?, display_order = ?, thumbnail = ?, title = ?, filepath = ?, author = ?, publisher = ?, direction = ? WHERE book_id = ?",
+		book.Volume, book.DisplayOrder, book.Thumbnail, book.Title, book.Filepath, book.Author, book.Publisher, book.Direction, book.BookId)
 	return book, err
 }
 

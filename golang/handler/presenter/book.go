@@ -9,4 +9,5 @@ type Book struct {
 	Filepath     string `json:"filepath"`
 	Author       string `json:"author"`
 	Publisher    string `json:"publisher"`
+	Direction    string `json:"direction"`
 }
