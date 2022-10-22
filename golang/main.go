@@ -31,6 +31,7 @@ func main() {
 	r := mux.NewRouter()
 	//handlers
 	n := negroni.New(
+		negroni.HandlerFunc(handler.Cors),
 		negroni.NewLogger(),
 	)
 	//book
