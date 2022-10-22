@@ -2,10 +2,8 @@ package model
 
 //Tag is TagModel
 type Tag struct {
-	TagId    string
-	TagName  string
-	CreateAt string
-	UpdateAt string
+	TagId   string
+	TagName string
 }
 
 //NewTag create a new tag

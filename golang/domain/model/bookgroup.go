@@ -8,8 +8,6 @@ type BookGroup struct {
 	Author        string
 	AuthorReading string
 	Thumbnail     string
-	CreateAt      string
-	UpdateAt      string
 	Tags          []*Tag
 }
 
