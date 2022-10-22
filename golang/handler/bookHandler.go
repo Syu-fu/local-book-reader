@@ -100,6 +100,7 @@ func createBook(usecase usecase.BookUsecase) http.Handler {
 			Filepath     string `json:"filepath"`
 			Author       string `json:"author"`
 			Publisher    string `json:"publisher"`
+			Direction    string `json:"direction"`
 		}
 		err := json.NewDecoder(r.Body).Decode(&input)
 		if err != nil {
@@ -109,7 +110,7 @@ func createBook(usecase usecase.BookUsecase) http.Handler {
 			return
 		}
 		id := model.NewID()
-		book, err := model.NewBook(id, input.Volume, input.DisplayOrder, input.Thumbnail, input.Title, input.Filepath, input.Author, input.Publisher)
+		book, err := model.NewBook(id, input.Volume, input.DisplayOrder, input.Thumbnail, input.Title, input.Filepath, input.Author, input.Publisher, input.Direction)
 		if err != nil {
 			log.Println(err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
@@ -131,6 +132,7 @@ func createBook(usecase usecase.BookUsecase) http.Handler {
 			Filepath:     input.Filepath,
 			Author:       input.Author,
 			Publisher:    input.Publisher,
+			Direction:    input.Direction,
 		}
 
 		w.WriteHeader(http.StatusCreated)
@@ -155,6 +157,7 @@ func editBook(usecase usecase.BookUsecase) http.Handler {
 			Filepath     string `json:"filepath"` //path of books
 			Author       string `json:"author"`
 			Publisher    string `json:"publisher"`
+			Direction    string `json:"direction"`
 		}
 		err := json.NewDecoder(r.Body).Decode(&input)
 		if err != nil {
@@ -163,7 +166,7 @@ func editBook(usecase usecase.BookUsecase) http.Handler {
 			_, _ = w.Write([]byte(errorMessage))
 			return
 		}
-		book, err := model.NewBook(input.BookId, input.Volume, input.DisplayOrder, input.Thumbnail, input.Title, input.Filepath, input.Author, input.Publisher)
+		book, err := model.NewBook(input.BookId, input.Volume, input.DisplayOrder, input.Thumbnail, input.Title, input.Filepath, input.Author, input.Publisher, input.Direction)
 		if err != nil {
 			log.Println(err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
@@ -185,6 +188,7 @@ func editBook(usecase usecase.BookUsecase) http.Handler {
 			Filepath:     input.Filepath,
 			Author:       input.Author,
 			Publisher:    input.Publisher,
+			Direction:    input.Direction,
 		}
 
 		w.WriteHeader(http.StatusCreated)
