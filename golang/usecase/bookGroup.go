@@ -6,6 +6,7 @@ import (
 )
 
 type BookGroupUsecase interface {
+	Search(string) (bookGroups []*model.BookGroup, err error)
 	GetList() (bookGroups []*model.BookGroup, err error)
 	GetById(string) (bookGroup *model.BookGroup, err error)
 	Add(*model.BookGroup) (err error)
@@ -20,6 +21,12 @@ type bookGroupUsecase struct {
 func NewBookGroupUsecase(bookGroupRepo repository.BookGroupRepository) BookGroupUsecase {
 	bookGroupUsecase := bookGroupUsecase{bookGroupRepo: bookGroupRepo}
 	return &bookGroupUsecase
+}
+
+// Get a list of book group
+func (usecase *bookGroupUsecase) Search(word string) (bookGroups []*model.BookGroup, err error) {
+	bookGroups, err = usecase.bookGroupRepo.Search(word)
+	return
 }
 
 // Get a list of book group
