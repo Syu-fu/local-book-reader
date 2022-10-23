@@ -13,6 +13,42 @@ import (
 	"github.com/gorilla/mux"
 )
 
+func searchBookGroups(usecase usecase.BookGroupUsecase) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorMessage := "Error searching bookgroups"
+		vars := mux.Vars(r)
+		word := vars["word"]
+		data, err := usecase.Search(word)
+		if err != nil && err != model.ErrNotFound {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(errorMessage))
+			return
+		}
+
+		if data == nil {
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = w.Write([]byte(errorMessage))
+			return
+		}
+		var toJ []*presenter.BookGroup
+		for _, d := range data {
+			toJ = append(toJ, &presenter.BookGroup{
+				BookId:        d.BookId,
+				Title:         d.Title,
+				TitleReading:  d.TitleReading,
+				Author:        d.Author,
+				AuthorReading: d.AuthorReading,
+				Thumbnail:     d.Thumbnail,
+				Tags:          d.Tags,
+			})
+		}
+		if err := json.NewEncoder(w).Encode(toJ); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(errorMessage))
+		}
+	})
+}
+
 func getBookGroups(usecase usecase.BookGroupUsecase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		errorMessage := "Error reading bookgroups"
@@ -197,6 +233,10 @@ func deleteBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 
 //MakeBookGroupHandlers make url handlers
 func MakeBookGroupHandlers(r *mux.Router, n negroni.Negroni, usecase usecase.BookGroupUsecase) {
+	r.Handle("/bookgroup/search/{word}", n.With(
+		negroni.Wrap(searchBookGroups(usecase)),
+	)).Methods("GET", "OPTIONS").Name("searchBookGroups")
+
 	r.Handle("/bookgroup/", n.With(
 		negroni.Wrap(getBookGroups(usecase)),
 	)).Methods("GET", "OPTIONS").Name("getBookGroups")
