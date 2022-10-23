@@ -41,6 +41,34 @@ func (bookGroupRepo *BookGroupRepository) Read() ([]*model.BookGroup, error) {
 	return bookgroups, err
 }
 
+func (bookGroupRepo *BookGroupRepository) Search(word string) ([]*model.BookGroup, error) {
+	var bookgroups []*model.BookGroup
+	searchWord := "%" + word + "%"
+	rows, err := bookGroupRepo.SqlHandler.Conn.Query("SELECT book_groups.book_id, book_groups.title, book_groups.title_reading, book_groups.author, book_groups.author_reading, book_groups.thumbnail, tags.tag_id, tags.tag_name "+
+		"FROM book_groups LEFT OUTER JOIN tagging ON book_groups.book_id JOIN tags ON tagging.tag_id = tags.tag_id "+
+		"WHERE book_groups.title LIKE ? OR book_groups.title_reading LIKE ? OR book_groups.author LIKE ? OR book_groups.author_reading LIKE ? ORDER BY book_groups.book_id", searchWord, searchWord, searchWord, searchWord)
+	if err != nil {
+		return nil, err
+	}
+	cnt := -1
+	for rows.Next() {
+		var bg model.BookGroup
+		var tag model.Tag
+		err = rows.Scan(&bg.BookId, &bg.Title, &bg.TitleReading, &bg.Author, &bg.AuthorReading, &bg.Thumbnail, &tag.TagId, &tag.TagName)
+		if err != nil {
+			return nil, err
+		}
+		if cnt == -1 || bookgroups[cnt].BookId != bg.BookId {
+			bookgroups = append(bookgroups, &bg)
+			cnt++
+			_ = bookgroups[cnt].AddTag(&tag)
+		} else {
+			_ = bookgroups[cnt].AddTag(&tag)
+		}
+	}
+	return bookgroups, err
+}
+
 func (bookGroupRepo *BookGroupRepository) ReadById(id string) (*model.BookGroup, error) {
 	var bg *model.BookGroup = new(model.BookGroup)
 	rows, err := bookGroupRepo.SqlHandler.Conn.Query("SELECT book_groups.book_id, book_groups.title, book_groups.title_reading, book_groups.author, book_groups.author_reading, book_groups.thumbnail, tags.tag_id, tags.tag_name "+
