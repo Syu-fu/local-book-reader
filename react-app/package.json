@@ -62,5 +62,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "prettier": "2.7.1"
+  },
+  "jest": {
+    "transformIgnorePatterns": ["node_modules\/(?!axios)"]
   }
 }
