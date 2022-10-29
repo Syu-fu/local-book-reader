@@ -1,30 +1,24 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import BookGroupListItem from "./components/BookGroupListItem";
-import type BookGroup from "./types/BookGroup";
+import BookListItem from "./components/BookListItem";
+import type Book from "./types/Book";
 
-test("renders bookgroup list item", () => {
-  const bookgroup: BookGroup = {
+test("renders booklist item", () => {
+  const book: Book = {
     bookId: "",
-    title: "The Hitchhiker's Guide to the Galaxy",
-    titleReading: "",
-    author: "Douglas Adams",
-    authorReading: "",
+    volume: "1",
+    displayOrder: "1",
     thumbnail: "",
-    tags: [
-      {
-        TagId: "",
-        TagName: "novel",
-      },
-    ],
+    title: "The Hitchhiker's Guide to the Galaxy",
+    filepath: "Douglas Adams",
+    author: "Douglas Adams",
+    publisher: "",
   };
-  render(<BookGroupListItem bookgroup={bookgroup} />);
+  render(<BookListItem src={book.thumbnail} title={book.title} author={book.author} volume={book.volume} />);
   const titleElement = screen.getByText(
     /The Hitchhiker's Guide to the Galaxy/i
   );
   expect(titleElement).toBeInTheDocument();
   const authorElement = screen.getByText(/Douglas Adams/i);
   expect(authorElement).toBeInTheDocument();
-  const tagElement = screen.getByText(/novel/i);
-  expect(tagElement).toBeInTheDocument();
 });
