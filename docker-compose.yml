@@ -56,3 +56,18 @@ services:
       - mysql
     ports:
       - 8888:80
+  minio:
+    build:
+      context: .
+      dockerfile: ./docker/minio/Dockerfile
+    container_name: minio_container_test
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=administrator
+    entrypoint: sh
+    command: -c "/opt/bin/minio server /export --address :9000 --console-address :9001"
+    volumes:
+      - ./minio:/export
