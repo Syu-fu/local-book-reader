@@ -14,7 +14,14 @@ test("renders booklist item", () => {
     author: "Douglas Adams",
     publisher: "",
   };
-  render(<BookListItem src={book.thumbnail} title={book.title} author={book.author} volume={book.volume} />);
+  render(
+    <BookListItem
+      src={book.thumbnail}
+      title={book.title}
+      author={book.author}
+      volume={book.volume}
+    />
+  );
   const titleElement = screen.getByText(
     /The Hitchhiker's Guide to the Galaxy/i
   );
