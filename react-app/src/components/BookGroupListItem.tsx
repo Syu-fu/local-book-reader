@@ -6,12 +6,17 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import SellIcon from '@mui/icons-material/Sell';
 import Typography from '@mui/material/Typography'
+import { useNavigate } from 'react-router-dom';
 import type BookGroup from '../types/BookGroup'
 
 const BookGroupListItem: React.FC<{ bookgroup: BookGroup }> = ({bookgroup}) => {
+  const navigate = useNavigate();
+  const move = (nextPage: string) => {
+    navigate(nextPage);
+  };
   return (
     <div key={bookgroup.bookId}>
-      <ListItem button>
+      <ListItem button key={bookgroup.bookId} onClick={() => { move(`/book/${bookgroup.bookId}`) } } >
         <Grid container >
           <Grid item xs={3}>
             <img alt={bookgroup.title} src={bookgroup.thumbnail} style={{ maxWidth: "100%" }} />

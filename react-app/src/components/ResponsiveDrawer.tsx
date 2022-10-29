@@ -39,7 +39,7 @@ interface Props {
       <Divider />
       <List>
         <ListSubheader>Book</ListSubheader>
-        <ListItem button key="search" onClick={() => { move('/bookgroup') }}>
+        <ListItem button key="search" onClick={() => { move('/') }}>
           <ListItemIcon>
             <SearchIcon />
           </ListItemIcon>
