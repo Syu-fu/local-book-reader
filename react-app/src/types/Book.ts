@@ -7,6 +7,7 @@ type Book = {
   filepath: string;
   author: string;
   publisher: string;
+  direction: string;
 }
 
 export default Book

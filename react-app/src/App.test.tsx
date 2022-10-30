@@ -13,6 +13,7 @@ test("renders booklist item", () => {
     filepath: "Douglas Adams",
     author: "Douglas Adams",
     publisher: "",
+    direction: "",
   };
   render(
     <BookListItem
