@@ -3,7 +3,7 @@ import Divider from '@mui/material/Divider';
 import { useParams } from 'react-router-dom'
 import ResponsiveDrawer from '../components/ResponsiveDrawer';
 import BookListItem from '../components/BookListItem'
-import { useFetchBooks } from '../hooks/useFetchBook'
+import { useFetchBooks } from '../hooks/useFetchBooks'
 
 const BookList: React.FC = () => {
   const params = useParams<{ bookId: string }>()
