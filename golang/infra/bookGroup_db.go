@@ -17,8 +17,8 @@ func NewBookGroupRepository(sqlHandler SqlHandler) repository.BookGroupRepositor
 
 func (bookGroupRepo *BookGroupRepository) Read() ([]*model.BookGroup, error) {
 	var bookgroups []*model.BookGroup
-	rows, err := bookGroupRepo.SqlHandler.Conn.Query("SELECT book_groups.book_id, book_groups.title, book_groups.title_reading, book_groups.author, book_groups.author_reading, book_groups.thumbnail, tags.tag_id, tags.tag_name " +
-		"FROM book_groups LEFT OUTER JOIN tagging ON book_groups.book_id JOIN tags ON tagging.tag_id = tags.tag_id ORDER BY book_groups.book_id")
+	rows, err := bookGroupRepo.SqlHandler.Conn.Query("SELECT book_groups.book_id, book_groups.title, book_groups.title_reading, book_groups.author, book_groups.author_reading, book_groups.thumbnail, ifnull(tags.tag_id, ''), ifnull(tags.tag_name, '') " +
+		"FROM book_groups LEFT OUTER JOIN tagging ON book_groups.book_id = tagging.book_id LEFT OUTER JOIN tags ON tagging.tag_id = tags.tag_id ORDER BY book_groups.book_id")
 	if err != nil {
 		return nil, err
 	}
@@ -33,9 +33,15 @@ func (bookGroupRepo *BookGroupRepository) Read() ([]*model.BookGroup, error) {
 		if cnt == -1 || bookgroups[cnt].BookId != bg.BookId {
 			bookgroups = append(bookgroups, &bg)
 			cnt++
-			_ = bookgroups[cnt].AddTag(&tag)
+			if tag.TagId != "" {
+				_ = bookgroups[cnt].AddTag(&tag)
+			} else {
+				bookgroups[cnt].Tags = []*model.Tag{}
+			}
 		} else {
-			_ = bookgroups[cnt].AddTag(&tag)
+			if tag.TagId != "" {
+				_ = bookgroups[cnt].AddTag(&tag)
+			}
 		}
 	}
 	return bookgroups, err
@@ -44,8 +50,8 @@ func (bookGroupRepo *BookGroupRepository) Read() ([]*model.BookGroup, error) {
 func (bookGroupRepo *BookGroupRepository) Search(word string) ([]*model.BookGroup, error) {
 	var bookgroups []*model.BookGroup
 	searchWord := "%" + word + "%"
-	rows, err := bookGroupRepo.SqlHandler.Conn.Query("SELECT book_groups.book_id, book_groups.title, book_groups.title_reading, book_groups.author, book_groups.author_reading, book_groups.thumbnail, tags.tag_id, tags.tag_name "+
-		"FROM book_groups LEFT OUTER JOIN tagging ON book_groups.book_id JOIN tags ON tagging.tag_id = tags.tag_id "+
+	rows, err := bookGroupRepo.SqlHandler.Conn.Query("SELECT book_groups.book_id, book_groups.title, book_groups.title_reading, book_groups.author, book_groups.author_reading, book_groups.thumbnail, ifnull(tags.tag_id, ''), ifnull(tags.tag_name, '') "+
+		"FROM book_groups LEFT OUTER JOIN tagging ON book_groups.book_id = tagging.book_id LEFT OUTER JOIN tags ON tagging.tag_id = tags.tag_id "+
 		"WHERE book_groups.title LIKE ? OR book_groups.title_reading LIKE ? OR book_groups.author LIKE ? OR book_groups.author_reading LIKE ? ORDER BY book_groups.book_id", searchWord, searchWord, searchWord, searchWord)
 	if err != nil {
 		return nil, err
@@ -61,9 +67,16 @@ func (bookGroupRepo *BookGroupRepository) Search(word string) ([]*model.BookGrou
 		if cnt == -1 || bookgroups[cnt].BookId != bg.BookId {
 			bookgroups = append(bookgroups, &bg)
 			cnt++
-			_ = bookgroups[cnt].AddTag(&tag)
+			if tag.TagId != "" {
+				_ = bookgroups[cnt].AddTag(&tag)
+			} else {
+				bookgroups[cnt].Tags = []*model.Tag{}
+				fmt.Println("emp")
+			}
 		} else {
-			_ = bookgroups[cnt].AddTag(&tag)
+			if tag.TagId != "" {
+				_ = bookgroups[cnt].AddTag(&tag)
+			}
 		}
 	}
 	return bookgroups, err
