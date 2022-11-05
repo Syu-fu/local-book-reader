@@ -25,12 +25,7 @@ func searchBookGroups(usecase usecase.BookGroupUsecase) http.Handler {
 			return
 		}
 
-		if data == nil {
-			w.WriteHeader(http.StatusNotFound)
-			_, _ = w.Write([]byte(errorMessage))
-			return
-		}
-		var toJ []*presenter.BookGroup
+		toJ := make([]*presenter.BookGroup, 0)
 		for _, d := range data {
 			toJ = append(toJ, &presenter.BookGroup{
 				BookId:        d.BookId,
