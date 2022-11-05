@@ -1,16 +1,16 @@
 import { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import axios from '../lib/axios'
-import type BooksResponse from '../types/BooksResponse'
+import type BookResponse from '../types/BookResponse'
 import type Book from '../types/Book'
 
 
-export const useFetchBooks = (bookIdParams: string | undefined) => {
-  const [res, setRes] = useState<BooksResponse>({ data: null, error: null, loading: false })
+export const useFetchBook = (bookIdParams: string | undefined, volumeParams: string | undefined) => {
+  const [res, setRes] = useState<BookResponse>({ data: null, error: null, loading: false })
 
-  const fetchRequest = (bookId: string | undefined) => {
-    setRes(prevState => {return { ...prevState, loading: true }})
-    axios.get<Book[]>(`/book/${bookId}`, {
+  const fetchRequest = (bookId: string | undefined, volume: string | undefined) => {
+    setRes(prevState => { return { ...prevState, loading: true } })
+    axios.get<Book>(`/book/${bookId}/${volume}`, {
     }).then((response) => {
       setRes({ data: response.data, error: null, loading: false })
     }).catch((error: AxiosError) => {
@@ -20,9 +20,9 @@ export const useFetchBooks = (bookIdParams: string | undefined) => {
   }
 
   useEffect(() => {
-    fetchRequest(bookIdParams)
+    fetchRequest(bookIdParams, volumeParams)
   }, [])
   return res
 }
 
-export default useFetchBooks
+export default useFetchBook
