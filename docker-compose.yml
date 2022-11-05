@@ -60,7 +60,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/minio/Dockerfile
-    container_name: minio_container_test
+    container_name: minio_container
     ports:
       - "9000:9000"
       - "9001:9001"
