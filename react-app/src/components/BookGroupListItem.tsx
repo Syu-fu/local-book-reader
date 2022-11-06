@@ -29,8 +29,8 @@ const BookGroupListItem: React.FC<{ bookgroup: BookGroup }> = ({bookgroup}) => {
             <Grid container spacing={0.5} justifyContent="flex-start">
               {bookgroup.tags.map(tag => {
                 return (
-                  <Grid item key={tag.TagId}>
-                    <Chip icon={<SellIcon />} label={tag.TagName} variant="outlined" size="small" />
+                  <Grid item key={tag.tagId}>
+                    <Chip icon={<SellIcon />} label={tag.tagName} variant="outlined" size="small" />
                   </Grid>
                 )
               }
