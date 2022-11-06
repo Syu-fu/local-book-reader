@@ -1,6 +1,6 @@
 type Tag ={
-  TagId: string;
-  TagName: string;
+  tagId: string;
+  tagName: string;
 }
 
 export default Tag;
