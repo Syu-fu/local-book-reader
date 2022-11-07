@@ -2,8 +2,11 @@ package infra
 
 import (
 	"database/sql"
+	"fmt"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 type SqlHandler struct {
@@ -11,7 +14,15 @@ type SqlHandler struct {
 }
 
 func NewSqlHandler() *SqlHandler {
-	conn, err := sql.Open("mysql", "admin:admin@tcp(mysql:3306)/local_book_reader")
+	err := godotenv.Load("./.env")
+
+	if err != nil {
+		fmt.Printf("Can't read .env file: %v", err)
+	}
+	user := os.Getenv("MYSQL_USER")
+	pass := os.Getenv("MYSQL_PASS")
+	port := os.Getenv("MYSQL_PORT")
+	conn, err := sql.Open("mysql", user+":"+pass+"@tcp(mysql:"+port+")/local_book_reader")
 	if err != nil {
 		panic(err.Error)
 	}
