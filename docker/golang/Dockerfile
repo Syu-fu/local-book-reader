@@ -9,5 +9,6 @@ ENV CGO_ENABLED=0
 
 WORKDIR /go/src/api
 COPY ./golang ./
+COPY ./.env ./.env
 
 RUN go mod download
