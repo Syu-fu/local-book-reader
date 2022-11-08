@@ -16,7 +16,7 @@ func NewBookRepository(sqlHandler SqlHandler) repository.BookRepository {
 }
 
 func (bookRepo *BookRepository) ReadById(id string) (books []*model.Book, err error) {
-	rows, err := bookRepo.SqlHandler.Conn.Query("SELECT book_id, volume, display_order, thumbnail, title, filepath, author, publisher, direction FROM books WHERE book_id = ?", id)
+	rows, err := bookRepo.SqlHandler.Conn.Query("SELECT book_id, volume, display_order, thumbnail, title, filepath, author, publisher, direction FROM books WHERE book_id = ? ORDER BY display_order, volume", id)
 	if err != nil {
 		fmt.Print(err)
 		return
