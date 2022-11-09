@@ -1,6 +1,7 @@
 package infra
 
 import (
+	"fmt"
 	"local-book-reader/domain/model"
 	"local-book-reader/domain/repository"
 )
@@ -12,6 +13,26 @@ type TagRepository struct {
 func NewTagRepository(sqlHandler SqlHandler) repository.TagRepository {
 	tagRepository := TagRepository{sqlHandler}
 	return &tagRepository
+}
+
+func (tagRepo *TagRepository) Search(name string) ([]*model.Tag, error) {
+	searchWord := "%" + name + "%"
+	var tags []*model.Tag
+	fmt.Println("SEARCH SQL RUNED:" + searchWord)
+	rows, err := tagRepo.SqlHandler.Conn.Query("SELECT tag_id, tag_name FROM tags WHERE tag_name LIKE ?", searchWord)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	for rows.Next() {
+		var t model.Tag
+		err = rows.Scan(&t.TagId, &t.TagName)
+		if err != nil {
+			return nil, err
+		}
+		tags = append(tags, &t)
+	}
+	return tags, err
 }
 
 func (tagRepo *TagRepository) Read() ([]*model.Tag, error) {

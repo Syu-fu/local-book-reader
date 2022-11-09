@@ -43,6 +43,32 @@ func getTags(usecase usecase.TagUsecase) http.Handler {
 	})
 }
 
+func searchTags(usecase usecase.TagUsecase) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorMessage := "Error searching tag"
+		vars := mux.Vars(r)
+		name := vars["tag_name"]
+		data, err := usecase.Search(name)
+		if err != nil && err != model.ErrNotFound {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(errorMessage))
+			return
+		}
+
+		toJ := make([]*presenter.Tag, 0)
+		for _, d := range data {
+			toJ = append(toJ, &presenter.Tag{
+				TagId:   d.TagId,
+				TagName: d.TagName,
+			})
+		}
+		if err := json.NewEncoder(w).Encode(toJ); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(errorMessage))
+		}
+	})
+}
+
 func getTagById(usecase usecase.TagUsecase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		errorMessage := "Error reading tag"
@@ -176,6 +202,10 @@ func MakeTagHandlers(r *mux.Router, n negroni.Negroni, usecase usecase.TagUsecas
 	r.Handle("/tag/", n.With(
 		negroni.Wrap(getTags(usecase)),
 	)).Methods("GET", "OPTIONS").Name("getTags")
+
+	r.Handle("/tag/search/q={tag_name}", n.With(
+		negroni.Wrap(searchTags(usecase)),
+	)).Methods("GET", "OPTIONS").Name("searchTags")
 
 	r.Handle("/tag/{tag_id}", n.With(
 		negroni.Wrap(getTagById(usecase)),
