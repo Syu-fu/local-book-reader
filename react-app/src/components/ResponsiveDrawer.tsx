@@ -13,6 +13,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
@@ -20,7 +21,8 @@ const drawerWidth = 240;
 
 interface Props {
   children: React.ReactNode;
-} const ResponsiveDrawer = (props: Props) => {
+}
+const ResponsiveDrawer = (props: Props) => {
   const { children } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const navigate = useNavigate();
@@ -44,6 +46,16 @@ interface Props {
             <SearchIcon />
           </ListItemIcon>
           <ListItemText primary="Search" />
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListSubheader>Tag</ListSubheader>
+        <ListItem button key="add" onClick={() => { move('/tag/add') }}>
+          <ListItemIcon>
+            <AddIcon />
+          </ListItemIcon>
+          <ListItemText primary="Add" />
         </ListItem>
       </List>
       <Divider />
