@@ -16,7 +16,7 @@ interface TagAddInput {
 
 const searchCharacters = async (search: string) => {
   return axios.get<Tag[]>(
-    `/tag/search/name/${search}`
+    `/tag/name/${search}`
   )
     .then((response) => {
       return response.data
