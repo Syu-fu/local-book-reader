@@ -97,6 +97,42 @@ func getTagById(usecase usecase.TagUsecase) http.Handler {
 	})
 }
 
+func getTagByName(usecase usecase.TagUsecase) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		errorMessage := "Error reading tag"
+		vars := mux.Vars(r)
+		name := vars["tag_name"]
+		data, err := usecase.GetByName(name)
+		if err != nil && err != model.ErrNotFound {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(errorMessage))
+			return
+		}
+
+		if data == nil {
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = w.Write([]byte(errorMessage))
+			return
+		}
+		if data.TagId == "" {
+			toJ := []string{}
+			if err := json.NewEncoder(w).Encode(toJ); err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				_, _ = w.Write([]byte(errorMessage))
+			}
+			return
+		}
+		toJ := &presenter.Tag{
+			TagId:   data.TagId,
+			TagName: data.TagName,
+		}
+		if err := json.NewEncoder(w).Encode(toJ); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(errorMessage))
+		}
+	})
+}
+
 func createTag(usecase usecase.TagUsecase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		errorMessage := "Error adding book"
@@ -197,7 +233,7 @@ func deleteTag(usecase usecase.TagUsecase) http.Handler {
 	})
 }
 
-//MakeTagHandlers make url handlers
+// MakeTagHandlers make url handlers
 func MakeTagHandlers(r *mux.Router, n negroni.Negroni, usecase usecase.TagUsecase) {
 	r.Handle("/tag/", n.With(
 		negroni.Wrap(getTags(usecase)),
@@ -210,6 +246,10 @@ func MakeTagHandlers(r *mux.Router, n negroni.Negroni, usecase usecase.TagUsecas
 	r.Handle("/tag/{tag_id}", n.With(
 		negroni.Wrap(getTagById(usecase)),
 	)).Methods("GET", "OPTIONS").Name("getTag")
+
+	r.Handle("/tag/name/{tag_name}", n.With(
+		negroni.Wrap(getTagByName(usecase)),
+	)).Methods("GET", "OPTIONS").Name("getTagByName")
 
 	r.Handle("/tag/", n.With(
 		negroni.Wrap(createTag(usecase)),
