@@ -59,6 +59,19 @@ func (tagRepo *TagRepository) ReadById(id string) (*model.Tag, error) {
 	return tag, err
 }
 
+func (tagRepo *TagRepository) ReadByName(name string) (*model.Tag, error) {
+	var tag *model.Tag = new(model.Tag)
+	rows, err := tagRepo.SqlHandler.Conn.Query(
+		"SELECT tag_id, tag_name FROM tags WHERE tag_name = ?", name)
+	for rows.Next() {
+		err = rows.Scan(&tag.TagId, &tag.TagName)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return tag, err
+}
+
 func (tagRepo *TagRepository) Create(tag *model.Tag) (*model.Tag, error) {
 	_, err := tagRepo.SqlHandler.Conn.Exec(
 		"INSERT INTO tags (tag_id, tag_name) VALUES (?, ?)",

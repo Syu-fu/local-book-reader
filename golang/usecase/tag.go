@@ -8,6 +8,7 @@ import (
 type TagUsecase interface {
 	Get() (tags []*model.Tag, err error)
 	GetById(string) (tag *model.Tag, err error)
+	GetByName(string) (tag *model.Tag, err error)
 	Search(string) (tags []*model.Tag, err error)
 	Add(*model.Tag) (err error)
 	Edit(*model.Tag) (err error)
@@ -38,6 +39,12 @@ func (usecase *tagUsecase) Get() (tags []*model.Tag, err error) {
 // Get a list of tags in the book group
 func (usecase *tagUsecase) GetById(id string) (tag *model.Tag, err error) {
 	tag, err = usecase.tagRepo.ReadById(id)
+	return
+}
+
+// Get a list of tags in the book group
+func (usecase *tagUsecase) GetByName(name string) (tag *model.Tag, err error) {
+	tag, err = usecase.tagRepo.ReadByName(name)
 	return
 }
 
