@@ -14,6 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
@@ -56,6 +57,12 @@ const ResponsiveDrawer = (props: Props) => {
             <AddIcon />
           </ListItemIcon>
           <ListItemText primary="Add" />
+        </ListItem>
+        <ListItem button key="edit" onClick={() => { move('/tag/edit') }}>
+          <ListItemIcon>
+            <EditIcon />
+          </ListItemIcon>
+          <ListItemText primary="Edit" />
         </ListItem>
       </List>
       <Divider />
