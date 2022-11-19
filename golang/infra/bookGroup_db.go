@@ -104,7 +104,10 @@ func (bookGroupRepo *BookGroupRepository) Create(bg *model.BookGroup) (*model.Bo
 	_, err := bookGroupRepo.SqlHandler.Conn.Exec(
 		"INSERT INTO book_groups (book_id, title, title_reading, author, author_reading, thumbnail) VALUES (?, ?, ?, ?, ?, ?)",
 		bg.BookId, bg.Title, bg.TitleReading, bg.Author, bg.AuthorReading, bg.Thumbnail)
-	fmt.Println(err.Error())
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil, err
+	}
 	return bg, err
 }
 
