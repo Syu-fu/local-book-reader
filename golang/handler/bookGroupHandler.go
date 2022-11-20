@@ -138,7 +138,7 @@ func createBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 			return
 		}
 		for _, v := range input.Tags {
-			book.AddTag(v)
+			_ = book.AddTag(v)
 		}
 
 		if err := usecase.Add(book); err != nil {
