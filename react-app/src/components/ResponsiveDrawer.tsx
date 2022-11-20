@@ -15,6 +15,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
@@ -73,6 +74,12 @@ const ResponsiveDrawer = (props: Props) => {
             <EditIcon />
           </ListItemIcon>
           <ListItemText primary="Edit" />
+        </ListItem>
+        <ListItem button key="delete" onClick={() => { move('/tag/delete') }}>
+          <ListItemIcon>
+            <DeleteIcon />
+          </ListItemIcon>
+          <ListItemText primary="Delete" />
         </ListItem>
       </List>
       <Divider />
