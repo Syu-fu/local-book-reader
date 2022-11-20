@@ -66,16 +66,16 @@ const BookGroupAddPage = () => {
     }
     ).then((response) => {
       if (response.status === 201) {
-        setApiMessage(`tagname ${response.data.title} has been updated.`)
+        setApiMessage(`BookGroup ${response.data.title} has been created.`)
         setApiError(false)
         uploadFile(response.data.bookId);
       }
       else {
-        setApiMessage('Update failed.')
+        setApiMessage('Create failed.')
         setApiError(true)
       }
     }).catch((error) => {
-      setApiMessage(`Update failed. ${error}`)
+      setApiMessage(`Create failed. ${error}`)
       setApiError(true)
     })
     setIsLoading(false)
