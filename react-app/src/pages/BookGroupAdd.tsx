@@ -18,7 +18,8 @@ interface BookGroupAddInput {
   titleReading: string
   author: string
   authorReading: string
-  tags: string[]
+  tagId: string[]
+  tags: Tag[]
 }
 
 const searchCharacters = async (search: string) => {
@@ -61,19 +62,20 @@ const BookGroupAddPage = () => {
       titleReading: data.titleReading,
       author: data.author,
       authorReading: data.authorReading,
+      tags: data.tags
     }
     ).then((response) => {
       if (response.status === 201) {
-        setApiMessage(`tagname ${response.data.title} has been updated.`)
+        setApiMessage(`BookGroup ${response.data.title} has been created.`)
         setApiError(false)
         uploadFile(response.data.bookId);
       }
       else {
-        setApiMessage('Update failed.')
+        setApiMessage('Create failed.')
         setApiError(true)
       }
     }).catch((error) => {
-      setApiMessage(`Update failed. ${error}`)
+      setApiMessage(`Create failed. ${error}`)
       setApiError(true)
     })
     setIsLoading(false)
@@ -139,7 +141,7 @@ const BookGroupAddPage = () => {
             </Stack>
             <Controller
               control={control}
-              name="tags"
+              name="tagId"
               render={() => {
                 return (
                   <Autocomplete
@@ -147,7 +149,12 @@ const BookGroupAddPage = () => {
                     options={resultOptions}
                     onChange={(event, item) => {
                       const ids = item.map((i) => { return i.tagId })
-                      setValue('tags', ids)
+                      const tags: Tag[] = [];
+                      ids.map((id) => {
+                        const tag: Tag = { tagId: id, tagName: "" }
+                        return tags.push(tag)
+                      })
+                      setValue('tags', tags)
                     }}
                     getOptionLabel={(option) => { return option.tagName }}
                     renderInput={(params) => {

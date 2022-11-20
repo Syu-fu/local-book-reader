@@ -105,9 +105,25 @@ func (bookGroupRepo *BookGroupRepository) Create(bg *model.BookGroup) (*model.Bo
 		"INSERT INTO book_groups (book_id, title, title_reading, author, author_reading, thumbnail) VALUES (?, ?, ?, ?, ?, ?)",
 		bg.BookId, bg.Title, bg.TitleReading, bg.Author, bg.AuthorReading, bg.Thumbnail)
 	if err != nil {
-		fmt.Println(err.Error())
 		return nil, err
 	}
+	if len(bg.Tags) != 0 {
+		vals := []interface{}{}
+		taggingSQL := "INSERT INTO tagging (book_id, tag_id) VALUES "
+		for _, v := range bg.Tags {
+			fmt.Println(v.TagId)
+			taggingSQL += "(?, ?),"
+			vals = append(vals, bg.BookId, v.TagId)
+		}
+		// trim the last comma
+		taggingSQL = taggingSQL[0 : len(taggingSQL)-1]
+
+		if _, err := bookGroupRepo.SqlHandler.Conn.Exec(taggingSQL, vals...); err != nil {
+			fmt.Println(err.Error())
+			return nil, err
+		}
+	}
+
 	return bg, err
 }
 
