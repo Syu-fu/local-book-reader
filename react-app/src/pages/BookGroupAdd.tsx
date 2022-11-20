@@ -18,7 +18,8 @@ interface BookGroupAddInput {
   titleReading: string
   author: string
   authorReading: string
-  tags: string[]
+  tagId: string[]
+  tags: Tag[]
 }
 
 const searchCharacters = async (search: string) => {
@@ -61,6 +62,7 @@ const BookGroupAddPage = () => {
       titleReading: data.titleReading,
       author: data.author,
       authorReading: data.authorReading,
+      tags: data.tags
     }
     ).then((response) => {
       if (response.status === 201) {
@@ -139,7 +141,7 @@ const BookGroupAddPage = () => {
             </Stack>
             <Controller
               control={control}
-              name="tags"
+              name="tagId"
               render={() => {
                 return (
                   <Autocomplete
@@ -147,7 +149,12 @@ const BookGroupAddPage = () => {
                     options={resultOptions}
                     onChange={(event, item) => {
                       const ids = item.map((i) => { return i.tagId })
-                      setValue('tags', ids)
+                      const tags: Tag[] = [];
+                      ids.map((id) => {
+                        const tag: Tag = { tagId: id, tagName: "" }
+                        return tags.push(tag)
+                      })
+                      setValue('tags', tags)
                     }}
                     getOptionLabel={(option) => { return option.tagName }}
                     renderInput={(params) => {
