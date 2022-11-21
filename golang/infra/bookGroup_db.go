@@ -128,10 +128,32 @@ func (bookGroupRepo *BookGroupRepository) Create(bg *model.BookGroup) (*model.Bo
 }
 
 func (bookGroupRepo *BookGroupRepository) Update(bg *model.BookGroup) (*model.BookGroup, error) {
-	_, err := bookGroupRepo.SqlHandler.Conn.Exec(
+	if _, err := bookGroupRepo.SqlHandler.Conn.Exec(
 		"UPDATE book_groups SET title = ?, title_reading = ?, author = ?, author_reading = ?, thumbnail = ? WHERE book_id = ?",
-		bg.Title, bg.TitleReading, bg.Author, bg.AuthorReading, bg.Thumbnail, bg.BookId)
-	return bg, err
+		bg.Title, bg.TitleReading, bg.Author, bg.AuthorReading, bg.Thumbnail, bg.BookId); err != nil {
+		return nil, err
+	}
+
+	if _, err := bookGroupRepo.SqlHandler.Conn.Exec("DELETE FROM tagging WHERE book_id = ?", bg.BookId); err != nil {
+		return nil, err
+	}
+
+	if len(bg.Tags) != 0 {
+		vals := []interface{}{}
+		taggingSQL := "INSERT INTO tagging (book_id, tag_id) VALUES "
+		for _, v := range bg.Tags {
+			fmt.Println(v.TagId)
+			taggingSQL += "(?, ?),"
+			vals = append(vals, bg.BookId, v.TagId)
+		}
+		// trim the last comma
+		taggingSQL = taggingSQL[0 : len(taggingSQL)-1]
+
+		if _, err := bookGroupRepo.SqlHandler.Conn.Exec(taggingSQL, vals...); err != nil {
+			return nil, err
+		}
+	}
+	return bg, nil
 }
 
 func (bookGroupRepo *BookGroupRepository) Delete(id string) (string, error) {

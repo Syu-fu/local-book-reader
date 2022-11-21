@@ -153,6 +153,7 @@ func createBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 			Author:        input.Author,
 			AuthorReading: input.AuthorReading,
 			Thumbnail:     input.Thumbnail,
+			Tags:          input.Tags,
 		}
 
 		w.WriteHeader(http.StatusCreated)
@@ -169,13 +170,14 @@ func editBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		errorMessage := "Error editting bookgroup"
 		vars := mux.Vars(r)
-		id := vars["tag_id"]
+		id := vars["book_id"]
 		var input struct {
-			Title         string `json:"title"`
-			TitleReading  string `json:"titleReading"`
-			Author        string `json:"author"`
-			AuthorReading string `json:"authorReading"`
-			Thumbnail     string `json:"thumnail"`
+			Title         string       `json:"title"`
+			TitleReading  string       `json:"titleReading"`
+			Author        string       `json:"author"`
+			AuthorReading string       `json:"authorReading"`
+			Thumbnail     string       `json:"thumnail"`
+			Tags          []*model.Tag `json:"tags"`
 		}
 		err := json.NewDecoder(r.Body).Decode(&input)
 		if err != nil {
@@ -191,6 +193,9 @@ func editBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 			_, _ = w.Write([]byte(errorMessage))
 			return
 		}
+		for _, v := range input.Tags {
+			_ = bg.AddTag(v)
+		}
 
 		if err := usecase.Edit(bg); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -204,6 +209,7 @@ func editBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 			Author:        input.Author,
 			AuthorReading: input.AuthorReading,
 			Thumbnail:     input.Thumbnail,
+			Tags:          input.Tags,
 		}
 
 		w.WriteHeader(http.StatusCreated)
@@ -232,7 +238,7 @@ func deleteBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 
 // MakeBookGroupHandlers make url handlers
 func MakeBookGroupHandlers(r *mux.Router, n negroni.Negroni, usecase usecase.BookGroupUsecase) {
-	r.Handle("/bookgroup/search/{word}", n.With(
+	r.Handle("/bookgroup/search/q={word}", n.With(
 		negroni.Wrap(searchBookGroups(usecase)),
 	)).Methods("GET", "OPTIONS").Name("searchBookGroups")
 

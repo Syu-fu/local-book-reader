@@ -21,7 +21,7 @@ const searchCharacters = async (search: string) => {
       });
   }
   return axios.get<BookGroup[]>(
-    `/bookgroup/search/${search}`
+    `/bookgroup/search/q=${search}`
   )
     .then((response) => {
       return response.data
