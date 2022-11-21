@@ -7,6 +7,7 @@ import TagAddPage from '../pages/TagAdd';
 import TagEditPage from '../pages/TagEdit';
 import TagDeletePage from '../pages/TagDelete';
 import BookGroupAddPage from '../pages/BookGroupAdd';
+import BookGroupEditPage from '../pages/BookGroupEdit';
 
 const DrawerRouter: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const DrawerRouter: React.FC = () => {
           <Route path="/tag/edit" element={<TagEditPage />} />
           <Route path="/tag/delete" element={<TagDeletePage />} />
           <Route path="/bookgroup/add" element={<BookGroupAddPage />} />
+          <Route path="/bookgroup/Edit" element={<BookGroupEditPage />} />
         </Routes>
       </BrowserRouter >
     </div>
