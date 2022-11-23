@@ -65,6 +65,12 @@ const ResponsiveDrawer = (props: Props) => {
           </ListItemIcon>
           <ListItemText primary="Edit" />
         </ListItem>
+        <ListItem button key="delete" onClick={() => { move('/bookgroup/delete') }}>
+          <ListItemIcon>
+            <DeleteIcon />
+          </ListItemIcon>
+          <ListItemText primary="Delete" />
+        </ListItem>
       </List>
       <Divider />
       <List>
