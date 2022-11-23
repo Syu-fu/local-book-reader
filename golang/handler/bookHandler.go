@@ -93,6 +93,7 @@ func createBook(usecase usecase.BookUsecase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		errorMessage := "Error adding book"
 		var input struct {
+			BookId       string `json:"bookId"`
 			Volume       string `json:"volume"`
 			DisplayOrder int    `json:"displayOrder"`
 			Thumbnail    string `json:"thumnail"`
@@ -109,8 +110,7 @@ func createBook(usecase usecase.BookUsecase) http.Handler {
 			_, _ = w.Write([]byte(errorMessage))
 			return
 		}
-		id := model.NewID()
-		book, err := model.NewBook(id, input.Volume, input.DisplayOrder, input.Thumbnail, input.Title, input.Filepath, input.Author, input.Publisher, input.Direction)
+		book, err := model.NewBook(input.BookId, input.Volume, input.DisplayOrder, input.Thumbnail, input.Title, input.Filepath, input.Author, input.Publisher, input.Direction)
 		if err != nil {
 			log.Println(err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
@@ -124,7 +124,7 @@ func createBook(usecase usecase.BookUsecase) http.Handler {
 			return
 		}
 		toJ := &presenter.Book{
-			BookId:       id,
+			BookId:       input.BookId,
 			Volume:       input.Volume,
 			DisplayOrder: input.DisplayOrder,
 			Thumbnail:    input.Thumbnail,
@@ -216,7 +216,7 @@ func deleteBook(usecase usecase.BookUsecase) http.Handler {
 	})
 }
 
-//MakeBookHandlers make url handlers
+// MakeBookHandlers make url handlers
 func MakeBookHandlers(r *mux.Router, n negroni.Negroni, usecase usecase.BookUsecase) {
 	r.Handle("/book/{book_id}", n.With(
 		negroni.Wrap(getBookById(usecase)),
