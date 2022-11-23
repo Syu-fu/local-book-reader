@@ -8,6 +8,7 @@ import SellIcon from '@mui/icons-material/Sell';
 import Typography from '@mui/material/Typography'
 import { useNavigate } from 'react-router-dom';
 import type BookGroup from '../types/BookGroup'
+import { IPADDRESS, MINIO_PORT } from '../config/index'
 
 const BookGroupListItem: React.FC<{ bookgroup: BookGroup }> = ({bookgroup}) => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const BookGroupListItem: React.FC<{ bookgroup: BookGroup }> = ({bookgroup}) => {
       <ListItem button key={bookgroup.bookId} onClick={() => { move(`/book/${bookgroup.bookId}`) } } >
         <Grid container >
           <Grid item xs={3}>
-            <img alt={bookgroup.title} src={bookgroup.thumbnail} style={{ maxWidth: "100%" }} />
+            <img alt={bookgroup.title} src={`http://${IPADDRESS}:${MINIO_PORT}/data/thumbnail/bookgroup/${bookgroup.bookId}`} style={{ maxWidth: "100%" }} />
           </Grid>
           <Grid item xs={9} style={{ paddingLeft: "16px", paddingTop: "36px" }}>
             <Grid container >
