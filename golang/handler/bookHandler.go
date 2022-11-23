@@ -39,9 +39,7 @@ func getBookById(usecase usecase.BookUsecase) http.Handler {
 				BookId:       d.BookId,
 				Volume:       d.Volume,
 				DisplayOrder: d.DisplayOrder,
-				Thumbnail:    d.Thumbnail,
 				Title:        d.Title,
-				Filepath:     d.Filepath,
 				Author:       d.Author,
 				Publisher:    d.Publisher,
 			})
@@ -76,9 +74,7 @@ func getBookByIdAndVolume(usecase usecase.BookUsecase) http.Handler {
 			BookId:       data.BookId,
 			Volume:       data.Volume,
 			DisplayOrder: data.DisplayOrder,
-			Thumbnail:    data.Thumbnail,
 			Title:        data.Title,
-			Filepath:     data.Filepath,
 			Author:       data.Author,
 			Publisher:    data.Publisher,
 		}
@@ -96,9 +92,7 @@ func createBook(usecase usecase.BookUsecase) http.Handler {
 			BookId       string `json:"bookId"`
 			Volume       string `json:"volume"`
 			DisplayOrder int    `json:"displayOrder"`
-			Thumbnail    string `json:"thumnail"`
 			Title        string `json:"title"`
-			Filepath     string `json:"filepath"`
 			Author       string `json:"author"`
 			Publisher    string `json:"publisher"`
 			Direction    string `json:"direction"`
@@ -110,7 +104,7 @@ func createBook(usecase usecase.BookUsecase) http.Handler {
 			_, _ = w.Write([]byte(errorMessage))
 			return
 		}
-		book, err := model.NewBook(input.BookId, input.Volume, input.DisplayOrder, input.Thumbnail, input.Title, input.Filepath, input.Author, input.Publisher, input.Direction)
+		book, err := model.NewBook(input.BookId, input.Volume, input.DisplayOrder, input.Title, input.Author, input.Publisher, input.Direction)
 		if err != nil {
 			log.Println(err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
@@ -127,9 +121,7 @@ func createBook(usecase usecase.BookUsecase) http.Handler {
 			BookId:       input.BookId,
 			Volume:       input.Volume,
 			DisplayOrder: input.DisplayOrder,
-			Thumbnail:    input.Thumbnail,
 			Title:        input.Title,
-			Filepath:     input.Filepath,
 			Author:       input.Author,
 			Publisher:    input.Publisher,
 			Direction:    input.Direction,
@@ -152,9 +144,7 @@ func editBook(usecase usecase.BookUsecase) http.Handler {
 			BookId       string `json:"bookId"`
 			Volume       string `json:"volume"` //number of volumes
 			DisplayOrder int    `json:"displayOrder"`
-			Thumbnail    string `json:"thumnail"` //path of thumbnail
 			Title        string `json:"title"`
-			Filepath     string `json:"filepath"` //path of books
 			Author       string `json:"author"`
 			Publisher    string `json:"publisher"`
 			Direction    string `json:"direction"`
@@ -166,7 +156,7 @@ func editBook(usecase usecase.BookUsecase) http.Handler {
 			_, _ = w.Write([]byte(errorMessage))
 			return
 		}
-		book, err := model.NewBook(input.BookId, input.Volume, input.DisplayOrder, input.Thumbnail, input.Title, input.Filepath, input.Author, input.Publisher, input.Direction)
+		book, err := model.NewBook(input.BookId, input.Volume, input.DisplayOrder, input.Title, input.Author, input.Publisher, input.Direction)
 		if err != nil {
 			log.Println(err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
@@ -183,9 +173,7 @@ func editBook(usecase usecase.BookUsecase) http.Handler {
 			BookId:       input.BookId,
 			Volume:       input.Volume,
 			DisplayOrder: input.DisplayOrder,
-			Thumbnail:    input.Thumbnail,
 			Title:        input.Title,
-			Filepath:     input.Filepath,
 			Author:       input.Author,
 			Publisher:    input.Publisher,
 			Direction:    input.Direction,

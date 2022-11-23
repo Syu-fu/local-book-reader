@@ -6,7 +6,6 @@ type BookGroup= {
   titleReading: string;
   author: string;
   authorReading: string;
-  thumbnail: string;
   tags: Tag[];
 }
 

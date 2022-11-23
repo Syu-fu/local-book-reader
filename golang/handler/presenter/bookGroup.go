@@ -10,6 +10,5 @@ type BookGroup struct {
 	TitleReading  string       `json:"titleReading"`
 	Author        string       `json:"author"`
 	AuthorReading string       `json:"authorReading"`
-	Thumbnail     string       `json:"thumbnail"`
 	Tags          []*model.Tag `json:"tags"`
 }

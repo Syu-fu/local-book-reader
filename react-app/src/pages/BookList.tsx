@@ -29,7 +29,6 @@ const BookList: React.FC = () => {
           >
             <BookListItem
               bookId={book.bookId}
-              src={book.thumbnail}
               title={book.title}
               author={book.author}
               volume={book.volume}

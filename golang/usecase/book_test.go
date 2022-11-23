@@ -14,9 +14,7 @@ func newFixtureBook() *model.Book {
 		BookId:       "12345678-90ab-cdef-gh-ijklmnopqrst",
 		Volume:       "1",
 		DisplayOrder: 1,
-		Thumbnail:    "path/to/thumbnail",
 		Title:        "title",
-		Filepath:     "path/to/filepath",
 		Author:       "",
 		Publisher:    "",
 	}
@@ -27,9 +25,7 @@ func newFixtureBook2() *model.Book {
 		BookId:       "12345678-90ab-cdef-gh-ijklmnopqrst",
 		Volume:       "2",
 		DisplayOrder: 1,
-		Thumbnail:    "path/to/thumbnail",
 		Title:        "title2",
-		Filepath:     "path/to/filepath",
 		Author:       "",
 		Publisher:    "",
 	}
