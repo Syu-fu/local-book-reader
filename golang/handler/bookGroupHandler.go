@@ -226,7 +226,7 @@ func deleteBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		errorMessage := "Error deleting bookgroup"
 		vars := mux.Vars(r)
-		id := vars["tag_id"]
+		id := vars["book_id"]
 		err := usecase.Delete(id)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
