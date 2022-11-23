@@ -7,19 +7,17 @@ type BookGroup struct {
 	TitleReading  string
 	Author        string
 	AuthorReading string
-	Thumbnail     string
 	Tags          []*Tag
 }
 
 // NewBookGroup create a new bookgroup
-func NewBookGroup(bookId, title, titleReading, author, authorReading, thumbnail string) (*BookGroup, error) {
+func NewBookGroup(bookId, title, titleReading, author, authorReading string) (*BookGroup, error) {
 	bg := &BookGroup{
 		BookId:        bookId,
 		Title:         title,
 		TitleReading:  titleReading,
 		Author:        author,
 		AuthorReading: authorReading,
-		Thumbnail:     thumbnail,
 	}
 	err := bg.Validate()
 	if err != nil {

@@ -8,7 +8,7 @@ import (
 )
 
 func TestNewBook(t *testing.T) {
-	b, err := model.NewBook(model.NewID(), "1", 1, "path/to/thumbnail", "The Hitchhiker's Guide to the Galaxy", "path/to/filepath", "Douglas Adams", "Pan Books", "ltr")
+	b, err := model.NewBook(model.NewID(), "1", 1, "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Pan Books", "ltr")
 	assert.Nil(t, err)
 	assert.Equal(t, b.Title, "The Hitchhiker's Guide to the Galaxy")
 }
@@ -18,7 +18,6 @@ func TestBookValidate(t *testing.T) {
 		id        string
 		title     string
 		volume    string
-		filepath  string
 		direction string
 		want      error
 	}
@@ -28,7 +27,6 @@ func TestBookValidate(t *testing.T) {
 			id:        model.NewID(),
 			title:     "The Hitchhiker's Guide to the Galaxy",
 			volume:    "1",
-			filepath:  "path/to/filepath",
 			direction: "ltr",
 			want:      nil,
 		},
@@ -36,7 +34,6 @@ func TestBookValidate(t *testing.T) {
 			id:        model.NewID(),
 			title:     "",
 			volume:    "1",
-			filepath:  "path/to/filepath",
 			direction: "ltr",
 			want:      model.ErrInvalidEntity,
 		},
@@ -44,15 +41,6 @@ func TestBookValidate(t *testing.T) {
 			id:        model.NewID(),
 			title:     "The Hitchhiker's Guide to the Galaxy",
 			volume:    "",
-			filepath:  "path/to/filepath",
-			direction: "ltr",
-			want:      model.ErrInvalidEntity,
-		},
-		{
-			id:        model.NewID(),
-			title:     "The Hitchhiker's Guide to the Galaxy",
-			volume:    "1",
-			filepath:  "",
 			direction: "ltr",
 			want:      model.ErrInvalidEntity,
 		},
@@ -60,7 +48,6 @@ func TestBookValidate(t *testing.T) {
 			id:        "",
 			title:     "The Hitchhiker's Guide to the Galaxy",
 			volume:    "1",
-			filepath:  "path/to/filepath",
 			direction: "ltr",
 			want:      model.ErrInvalidEntity,
 		},
@@ -68,14 +55,13 @@ func TestBookValidate(t *testing.T) {
 			id:        model.NewID(),
 			title:     "The Hitchhiker's Guide to the Galaxy",
 			volume:    "1",
-			filepath:  "path/to/filepath",
 			direction: "",
 			want:      model.ErrInvalidEntity,
 		},
 	}
 	for _, tc := range tests {
 
-		_, err := model.NewBook(tc.id, tc.volume, 0, "thumbnail", tc.title, tc.filepath, "author", "publisher", tc.direction)
+		_, err := model.NewBook(tc.id, tc.volume, 0, tc.title, "author", "publisher", tc.direction)
 		assert.Equal(t, err, tc.want)
 	}
 

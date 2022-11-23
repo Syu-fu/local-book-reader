@@ -33,7 +33,6 @@ func searchBookGroups(usecase usecase.BookGroupUsecase) http.Handler {
 				TitleReading:  d.TitleReading,
 				Author:        d.Author,
 				AuthorReading: d.AuthorReading,
-				Thumbnail:     d.Thumbnail,
 				Tags:          d.Tags,
 			})
 		}
@@ -67,7 +66,6 @@ func getBookGroups(usecase usecase.BookGroupUsecase) http.Handler {
 				TitleReading:  d.TitleReading,
 				Author:        d.Author,
 				AuthorReading: d.AuthorReading,
-				Thumbnail:     d.Thumbnail,
 				Tags:          d.Tags,
 			})
 		}
@@ -101,7 +99,6 @@ func getBookGroupById(usecase usecase.BookGroupUsecase) http.Handler {
 			TitleReading:  data.TitleReading,
 			Author:        data.Author,
 			AuthorReading: data.AuthorReading,
-			Thumbnail:     data.Thumbnail,
 			Tags:          data.Tags,
 		}
 		if err := json.NewEncoder(w).Encode(toJ); err != nil {
@@ -119,7 +116,6 @@ func createBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 			TitleReading  string       `json:"titleReading"`
 			Author        string       `json:"author"`
 			AuthorReading string       `json:"authorReading"`
-			Thumbnail     string       `json:"thumnail"`
 			Tags          []*model.Tag `json:"tags"`
 		}
 		err := json.NewDecoder(r.Body).Decode(&input)
@@ -130,7 +126,7 @@ func createBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 			return
 		}
 		id := model.NewID()
-		book, err := model.NewBookGroup(id, input.Title, input.TitleReading, input.Author, input.AuthorReading, input.Thumbnail)
+		book, err := model.NewBookGroup(id, input.Title, input.TitleReading, input.Author, input.AuthorReading)
 		if err != nil {
 			log.Println(err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
@@ -152,7 +148,6 @@ func createBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 			TitleReading:  input.TitleReading,
 			Author:        input.Author,
 			AuthorReading: input.AuthorReading,
-			Thumbnail:     input.Thumbnail,
 			Tags:          input.Tags,
 		}
 
@@ -176,7 +171,6 @@ func editBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 			TitleReading  string       `json:"titleReading"`
 			Author        string       `json:"author"`
 			AuthorReading string       `json:"authorReading"`
-			Thumbnail     string       `json:"thumnail"`
 			Tags          []*model.Tag `json:"tags"`
 		}
 		err := json.NewDecoder(r.Body).Decode(&input)
@@ -186,7 +180,7 @@ func editBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 			_, _ = w.Write([]byte(errorMessage))
 			return
 		}
-		bg, err := model.NewBookGroup(id, input.Title, input.TitleReading, input.Author, input.AuthorReading, input.Thumbnail)
+		bg, err := model.NewBookGroup(id, input.Title, input.TitleReading, input.Author, input.AuthorReading)
 		if err != nil {
 			log.Println(err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
@@ -208,7 +202,6 @@ func editBookGroup(usecase usecase.BookGroupUsecase) http.Handler {
 			TitleReading:  input.TitleReading,
 			Author:        input.Author,
 			AuthorReading: input.AuthorReading,
-			Thumbnail:     input.Thumbnail,
 			Tags:          input.Tags,
 		}
 

@@ -8,7 +8,7 @@ import (
 )
 
 func TestNewBookGroup(t *testing.T) {
-	bg, err := model.NewBookGroup(model.NewID(), "The Hitchhiker's Guide to the Galaxy", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Douglas Adams", "/path/to/thumbnail")
+	bg, err := model.NewBookGroup(model.NewID(), "The Hitchhiker's Guide to the Galaxy", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Douglas Adams")
 	assert.Nil(t, err)
 	assert.Equal(t, bg.Title, "The Hitchhiker's Guide to the Galaxy")
 	assert.NotNil(t, bg.BookId)
@@ -39,13 +39,13 @@ func TestBookGroupValidate(t *testing.T) {
 		},
 	}
 	for _, tc := range tests {
-		_, err := model.NewBookGroup(tc.bookId, tc.title, "titleReading", "Author", "AuthorReading", "path/to/thumbnail")
+		_, err := model.NewBookGroup(tc.bookId, tc.title, "titleReading", "Author", "AuthorReading")
 		assert.Equal(t, err, tc.want)
 	}
 }
 
 func TestAddTag(t *testing.T) {
-	bg, _ := model.NewBookGroup(model.NewID(), "The Hitchhiker's Guide to the Galaxy", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Douglas Adams", "/path/to/thumbnail")
+	bg, _ := model.NewBookGroup(model.NewID(), "The Hitchhiker's Guide to the Galaxy", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Douglas Adams")
 	tID := model.NewID()
 	tag, _ := model.NewTag(tID, "tagname")
 	err := bg.AddTag(tag)
@@ -56,7 +56,7 @@ func TestAddTag(t *testing.T) {
 }
 
 func TestRemoveTag(t *testing.T) {
-	bg, _ := model.NewBookGroup(model.NewID(), "The Hitchhiker's Guide to the Galaxy", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Douglas Adams", "/path/to/thumbnail")
+	bg, _ := model.NewBookGroup(model.NewID(), "The Hitchhiker's Guide to the Galaxy", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Douglas Adams")
 	err := bg.RemoveTag(model.NewID())
 	assert.Equal(t, model.ErrNotFound, err)
 	tID := model.NewID()
@@ -67,7 +67,7 @@ func TestRemoveTag(t *testing.T) {
 }
 
 func TestGetTag(t *testing.T) {
-	bg, _ := model.NewBookGroup(model.NewID(), "The Hitchhiker's Guide to the Galaxy", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Douglas Adams", "/path/to/thumbnail")
+	bg, _ := model.NewBookGroup(model.NewID(), "The Hitchhiker's Guide to the Galaxy", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Douglas Adams")
 	tID := model.NewID()
 	tag, _ := model.NewTag(tID, "tagname")
 	_ = bg.AddTag(tag)
