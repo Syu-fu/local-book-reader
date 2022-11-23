@@ -157,6 +157,14 @@ func (bookGroupRepo *BookGroupRepository) Update(bg *model.BookGroup) (*model.Bo
 }
 
 func (bookGroupRepo *BookGroupRepository) Delete(id string) (string, error) {
-	_, err := bookGroupRepo.SqlHandler.Conn.Exec("DELETE FROM book_groups WHERE book_id = ?", id)
-	return id, err
+	if _, err := bookGroupRepo.SqlHandler.Conn.Exec("DELETE FROM tagging WHERE book_id = ?", id); err != nil {
+		return "", err
+	}
+	if _, err := bookGroupRepo.SqlHandler.Conn.Exec("DELETE FROM books WHERE book_id = ?", id); err != nil {
+		return "", err
+	}
+	if _, err := bookGroupRepo.SqlHandler.Conn.Exec("DELETE FROM book_groups WHERE book_id = ?", id); err != nil {
+		return "", err
+	}
+	return id, nil
 }
