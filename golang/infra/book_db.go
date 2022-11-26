@@ -56,8 +56,8 @@ func (bookRepo *BookRepository) Create(book *model.Book) (*model.Book, error) {
 
 func (bookRepo *BookRepository) Update(book *model.Book) (*model.Book, error) {
 	_, err := bookRepo.SqlHandler.Conn.Exec(
-		"UPDATE books SET volume = ?, display_order = ?, title = ?, author = ?, publisher = ?, direction = ? WHERE book_id = ?",
-		book.Volume, book.DisplayOrder, book.Title, book.Author, book.Publisher, book.Direction, book.BookId)
+		"UPDATE books SET volume = ?, display_order = ?, title = ?, author = ?, publisher = ?, direction = ? WHERE book_id = ? AND volume = ?",
+		book.Volume, book.DisplayOrder, book.Title, book.Author, book.Publisher, book.Direction, book.BookId, book.Volume)
 	return book, err
 }
 
