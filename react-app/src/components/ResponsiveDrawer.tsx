@@ -74,6 +74,16 @@ const ResponsiveDrawer = (props: Props) => {
       </List>
       <Divider />
       <List>
+        <ListSubheader>Book</ListSubheader>
+        <ListItem button key="add" onClick={() => { move('/book/add') }}>
+          <ListItemIcon>
+            <AddIcon />
+          </ListItemIcon>
+          <ListItemText primary="Add" />
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
         <ListSubheader>Tag</ListSubheader>
         <ListItem button key="add" onClick={() => { move('/tag/add') }}>
           <ListItemIcon>
