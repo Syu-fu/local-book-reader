@@ -140,9 +140,10 @@ func createBook(usecase usecase.BookUsecase) http.Handler {
 func editBook(usecase usecase.BookUsecase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		errorMessage := "Error editting book"
+		vars := mux.Vars(r)
+		id := vars["book_id"]
+		volume := vars["volume"]
 		var input struct {
-			BookId       string `json:"bookId"`
-			Volume       string `json:"volume"` //number of volumes
 			DisplayOrder int    `json:"displayOrder"`
 			Title        string `json:"title"`
 			Author       string `json:"author"`
@@ -156,7 +157,7 @@ func editBook(usecase usecase.BookUsecase) http.Handler {
 			_, _ = w.Write([]byte(errorMessage))
 			return
 		}
-		book, err := model.NewBook(input.BookId, input.Volume, input.DisplayOrder, input.Title, input.Author, input.Publisher, input.Direction)
+		book, err := model.NewBook(id, volume, input.DisplayOrder, input.Title, input.Author, input.Publisher, input.Direction)
 		if err != nil {
 			log.Println(err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
@@ -165,13 +166,14 @@ func editBook(usecase usecase.BookUsecase) http.Handler {
 		}
 
 		if err := usecase.Edit(book); err != nil {
+			log.Println(err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
 			_, _ = w.Write([]byte(errorMessage))
 			return
 		}
 		toJ := &presenter.Book{
-			BookId:       input.BookId,
-			Volume:       input.Volume,
+			BookId:       id,
+			Volume:       volume,
 			DisplayOrder: input.DisplayOrder,
 			Title:        input.Title,
 			Author:       input.Author,
@@ -193,7 +195,7 @@ func deleteBook(usecase usecase.BookUsecase) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		errorMessage := "Error deleting book"
 		vars := mux.Vars(r)
-		id := vars["id"]
+		id := vars["book_id"]
 		volume := vars["volume"]
 		err := usecase.Delete(id, volume)
 		if err != nil {
@@ -218,11 +220,11 @@ func MakeBookHandlers(r *mux.Router, n negroni.Negroni, usecase usecase.BookUsec
 		negroni.Wrap(createBook(usecase)),
 	)).Methods("POST", "OPTIONS").Name("createBook")
 
-	r.Handle("/book/", n.With(
+	r.Handle("/book/{book_id}/{volume}", n.With(
 		negroni.Wrap(editBook(usecase)),
 	)).Methods("PUT", "OPTIONS").Name("editBook")
 
-	r.Handle("/book/{book_id}", n.With(
+	r.Handle("/book/{book_id}/{volume}", n.With(
 		negroni.Wrap(deleteBook(usecase)),
 	)).Methods("DELETE", "OPTIONS").Name("deleteBook")
 }
