@@ -54,7 +54,7 @@ func Test_updateBook(t *testing.T) {
 	MakeBookHandlers(r, *n, bookUsecase)
 	path, err := r.GetRoute("editBook").GetPathTemplate()
 	assert.Nil(t, err)
-	assert.Equal(t, "/book/", path)
+	assert.Equal(t, "/book/{book_id}/{volume}", path)
 }
 
 func Test_deleteBook(t *testing.T) {
@@ -65,5 +65,5 @@ func Test_deleteBook(t *testing.T) {
 	MakeBookHandlers(r, *n, service)
 	path, err := r.GetRoute("deleteBook").GetPathTemplate()
 	assert.Nil(t, err)
-	assert.Equal(t, "/book/{book_id}", path)
+	assert.Equal(t, "/book/{book_id}/{volume}", path)
 }
