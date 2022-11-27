@@ -15,7 +15,7 @@ const BookListItem: React.FC<{ bookId: string, title: string, author: string, vo
     <ListItem button key={volume} onClick={() => { move(`/book/${bookId}/${volume}`) }}>
       <Grid container alignItems="center">
         <Grid item xs={3}>
-          <img alt={title} src={`http://${IPADDRESS}:${MINIO_PORT}/data/thumbnail/book/${bookId}`} style={{ maxWidth: "100%" }} />
+          <img alt={title} src={`http://${IPADDRESS}:${MINIO_PORT}/data/thumbnail/book/${bookId}/${volume}`} style={{ maxWidth: "100%" }} />
         </Grid>
         <Grid item xs={9} style={{ paddingLeft: "16px" }} >
           <ListItemText disableTypography primary={<Typography variant="h5" style={{ fontWeight: 'bold' }}>{title}</Typography>}
