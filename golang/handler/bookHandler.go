@@ -42,6 +42,7 @@ func getBookById(usecase usecase.BookUsecase) http.Handler {
 				Title:        d.Title,
 				Author:       d.Author,
 				Publisher:    d.Publisher,
+				Direction:    d.Direction,
 			})
 		}
 		if err := json.NewEncoder(w).Encode(toJ); err != nil {
@@ -77,6 +78,7 @@ func getBookByIdAndVolume(usecase usecase.BookUsecase) http.Handler {
 			Title:        data.Title,
 			Author:       data.Author,
 			Publisher:    data.Publisher,
+			Direction:    data.Direction,
 		}
 		if err := json.NewEncoder(w).Encode(toJ); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
