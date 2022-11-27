@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `local_book_reader`.`books` (
 
 CREATE TABLE IF NOT EXISTS `local_book_reader`.`tags` (
     `tag_id`         CHAR(36)    DEFAULT (BIN_TO_UUID(UUID_TO_BIN(UUID(), 1))),
-    `tag_name`       CHAR(100)   NOT NULL,
+    `tag_name`       CHAR(100)   NOT NULL UNIQUE,
     `created_at`     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `updated_at`     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     PRIMARY KEY (`tag_id`)
