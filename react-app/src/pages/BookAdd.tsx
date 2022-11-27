@@ -42,7 +42,7 @@ const searchBookGroup = async (search: string) => {
 
 const BookAddPage = () => {
   const [searchBookGroupString, setSearchBookGroupString] = useState('');
-  const { control, handleSubmit, register, reset } = useForm<BookAddInput>({ mode: 'onChange' })
+  const { control, handleSubmit, register, reset, setValue } = useForm<BookAddInput>({ mode: 'onChange' })
   const [apiMessage, setApiMessage] = useState('')
   const [apiError, setApiError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -116,12 +116,14 @@ const BookAddPage = () => {
       setBookId(selectedValue.bookId)
       reset({
         bookId: selectedValue.bookId,
+        direction: "ltr",
       })
     }
   };
 
   const handleRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDirection((event.target as HTMLInputElement).value);
+    setValue("direction", (event.target as  HTMLInputElement).value as "ltr" | "rtl")
   };
 
   const debouncedBookGroupSearchTerm = useDebounce(searchBookGroupString, 300);
