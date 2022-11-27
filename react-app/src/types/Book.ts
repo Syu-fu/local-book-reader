@@ -1,7 +1,7 @@
 type Book = {
   bookId: string;
   volume: string;
-  displayOrder: string;
+  displayOrder: number;
   title: string;
   author: string;
   publisher: string;
