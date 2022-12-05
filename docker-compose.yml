@@ -9,8 +9,7 @@ services:
     volumes:
       - ./react-app:/app/react
       - ./.env:/app/react/.env
-    command: sh -c "cd /app/react && npm i && npm build"
-    command: sh -c "cd /app/react/build && npm start"
+    command: sh -c "cd /app/react && npm i && npm i -g serve && npm run build && serve -s build"
     ports:
       - ${REACT_PORT}:3000
   go:
