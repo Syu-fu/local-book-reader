@@ -9,8 +9,7 @@ services:
     volumes:
       - ./react-app:/app/react
       - ./.env:/app/react/.env
-    command: sh -c "cd /app/react && npm i && npm build"
-    command: sh -c "cd /app/react/build && npm start"
+    command: sh -c "cd /app/react && npm i && npm i -g serve && npm run build && serve -s build"
     ports:
       - ${REACT_PORT}:3000
   go:
@@ -51,7 +50,7 @@ services:
     container_name: phpmyadmin_container
     environment:
       PMA_ARBITRARY: 1
-      PMA_HOST: mysql
+      PMA_HOST: mysql:${MYSQL_PORT}
       PMA_USER: ${MYSQL_USER}
       PMA_PASSWORD: ${MYSQL_PASS}
     links:
@@ -70,6 +69,6 @@ services:
       MINIO_ROOT_USER: ${REACT_APP_MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${REACT_APP_MINIO_ROOT_PASS}
     entrypoint: sh
-    command: -c "/opt/bin/minio server /export --address :${REACT_APP_MINIO_PORT} --console-address :${MINIO_CONSOLE_PORT}"
+    command: -c "/opt/bin/minio server /export --address :9000 --console-address :9001"
     volumes:
       - ./minio:/export
