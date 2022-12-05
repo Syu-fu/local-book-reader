@@ -69,6 +69,6 @@ services:
       MINIO_ROOT_USER: ${REACT_APP_MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${REACT_APP_MINIO_ROOT_PASS}
     entrypoint: sh
-    command: -c "/opt/bin/minio server /export --address :${REACT_APP_MINIO_PORT} --console-address :${MINIO_CONSOLE_PORT}"
+    command: -c "/opt/bin/minio server /export --address :9000 --console-address :9001"
     volumes:
       - ./minio:/export
