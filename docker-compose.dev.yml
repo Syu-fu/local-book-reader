@@ -50,7 +50,7 @@ services:
     container_name: phpmyadmin_container
     environment:
       PMA_ARBITRARY: 1
-      PMA_HOST: mysql
+      PMA_HOST: mysql:${MYSQL_PORT}
       PMA_USER: ${MYSQL_USER}
       PMA_PASSWORD: ${MYSQL_PASS}
     links:
