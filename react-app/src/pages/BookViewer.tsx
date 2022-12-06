@@ -20,14 +20,15 @@ const BookViewer: React.FC = () => {
       const listObjectsOfBucket = async () => {
         try {
           const objectsStream = mc.extensions.listObjectsV2WithMetadata(bucketName, `file/${params.bookId}/${params.volume}/`, true, '')
-          console.log(objectsStream)
           objectsStream.on('data', async (chunk) => {
             const { name: objectName } = chunk
             const presignedUrl = await mc.presignedGetObject(bucketName, objectName)
             if (!ignore) {
-              setFilenames((pre) => {
-                return [...pre, presignedUrl]
-              })
+              setTimeout(() => {
+                setFilenames((pre) => {
+                  return [...pre, presignedUrl]
+                })
+              }, 50)
             }
           });
         } catch (err) {
@@ -35,6 +36,7 @@ const BookViewer: React.FC = () => {
         }
       };
       listObjectsOfBucket();
+
       return () => {
         ignore = true;
       }
