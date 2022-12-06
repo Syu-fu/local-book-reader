@@ -21,8 +21,7 @@ func NewSqlHandler() *SqlHandler {
 	}
 	user := os.Getenv("MYSQL_USER")
 	pass := os.Getenv("MYSQL_PASS")
-	port := os.Getenv("MYSQL_PORT")
-	conn, err := sql.Open("mysql", user+":"+pass+"@tcp(mysql:"+port+")/local_book_reader")
+	conn, err := sql.Open("mysql", user+":"+pass+"@tcp(mysql)/local_book_reader")
 	if err != nil {
 		panic(err.Error)
 	}
